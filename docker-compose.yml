@@ -1,0 +1,11 @@
+# for local development
+version: "3.7"
+services:
+  websurf:
+    build:
+      context: .
+      target: "develop-stage"
+    volumes:
+      - ".:/app"
+    tty: true
+    command: yarn
