@@ -20,6 +20,6 @@ yarn add @dscribers/websurf-adapter
 
 ```html
 <script>
-  new AutoSurf(WebSurf)
+  new AutoSurf(new WebSurf())
 </script>
 ```
