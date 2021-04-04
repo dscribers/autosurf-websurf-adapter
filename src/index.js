@@ -2,23 +2,23 @@ import BaseAdapter from '@dscribers/autosurf/dist/base-adapter'
 import Surfer from './Surfer'
 
 export default class WebSurf extends BaseAdapter {
-  static #storeName = location.origin + '_atsrf'
-  static #shouldBackup = false
-  static #isReloaded = false
+  #storeName = location.origin + '_atsrf'
+  #shouldBackup = false
+  #isReloaded = false
 
-  static #maxLoadWaitTime = 30000 // 30 seconds
-  static #waitPollTime = 500
-  static #waited = 0
+  #maxLoadWaitTime = 30000 // 30 seconds
+  #waitPollTime = 500
+  #waited = 0
 
-  static #blur = () => {}
+  #blur = () => { }
 
-  static #errorCallback = () => {}
-  static #successCallback = () => {}
+  #errorCallback = () => { }
+  #successCallback = () => { }
 
   /**
    * @inheritdoc
    */
-  static checkAttrContains(selector, attr, text) {
+  checkAttrContains (selector, attr, text) {
     this.#focus(selector)
     this.#checked(new Surfer(selector).attr(attr).indexOf(text) !== -1)
   }
@@ -26,7 +26,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static checkAttrIs(selector, attr, val) {
+  checkAttrIs (selector, attr, val) {
     this.#focus(selector)
     this.#checked(new Surfer(selector).attr(attr) == val)
   }
@@ -34,7 +34,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static checkExists(selector) {
+  checkExists (selector) {
     this.#focus(selector)
     this.#checked(new Surfer(selector).length > 0)
   }
@@ -42,7 +42,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static checkIsOn(url) {
+  checkIsOn (url) {
     this.#checked(document.location.href === url.toLowerCase())
   }
 
@@ -52,7 +52,7 @@ export default class WebSurf extends BaseAdapter {
    * @param {string} selector The selector of the target html element
    * @param {string} display visible | hidden
    */
-  static checkElementIs (selector, display) {
+  checkElementIs (selector, display) {
     this.#focus(selector)
 
     display = display === 'visible'
@@ -74,7 +74,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static checkTextContains(selector, text) {
+  checkTextContains (selector, text) {
     this.#focus(selector)
     this.#checked(new Surfer(selector).text().indexOf(text) !== -1)
   }
@@ -82,7 +82,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static checkTextIs(selector, text) {
+  checkTextIs (selector, text) {
     this.#focus(selector)
     this.#checked(new Surfer(selector).text() === text)
   }
@@ -90,7 +90,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static checkValueContains(selector, text) {
+  checkValueContains (selector, text) {
     this.#focus(selector)
     this.#checked(new Surfer(selector).value().indexOf(text) !== -1)
   }
@@ -98,7 +98,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static checkValueIs(selector, value) {
+  checkValueIs (selector, value) {
     this.#focus(selector)
     this.#checked(new Surfer(selector).value() === value)
   }
@@ -106,7 +106,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static doClick(selector) {
+  doClick (selector) {
     if (selector) {
       this.#focus(selector)
 
@@ -120,7 +120,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static doGoBack() {
+  doGoBack () {
     if (window.history) {
       this.#done()
       window.history.back()
@@ -132,7 +132,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static doGoto(url) {
+  doGoto (url) {
     this.#done()
     setTimeout(() => (location.href = url))
   }
@@ -140,7 +140,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static doRefresh() {
+  doRefresh () {
     this.#done()
     location.reload()
   }
@@ -148,7 +148,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static doSelect (selector, value) {
+  doSelect (selector, value) {
     if (selector) {
       this.#focus(selector)
 
@@ -163,7 +163,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static doSubmitForm(selector) {
+  doSubmitForm (selector) {
     if (selector) {
       this.#focus(selector)
 
@@ -177,7 +177,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static doType(selector, str, speed = 100) {
+  doType (selector, str, speed = 100) {
     if (selector) {
       this.#focus(selector)
 
@@ -206,7 +206,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static doWait(milliseconds) {
+  doWait (milliseconds) {
     if (milliseconds) {
       setTimeout(() => this.#done(true), milliseconds)
     } else {
@@ -217,7 +217,7 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static doWaitTillPageLoads() {
+  doWaitTillPageLoads () {
     if (this.#isReloaded) {
       this.#isReloaded = false
       this.#done(true)
@@ -237,13 +237,15 @@ export default class WebSurf extends BaseAdapter {
   /**
    * @inheritdoc
    */
-  static init($autosurf, callback) {
-    const oldLoadFunc = window.onload
+  init ($autosurf, callback = () => { }) {
+    let loaded = false
 
-    window.onload = () => {
-      if (typeof oldLoadFunc === 'function') {
-        oldLoadFunc()
+    const load = () => {
+      if (loaded) {
+        return
       }
+
+      loaded = true
 
       let stored = localStorage.getItem(this.#storeName)
 
@@ -259,8 +261,20 @@ export default class WebSurf extends BaseAdapter {
         }
       }
 
-      if (typeof callback === 'function') {
-        callback(stored)
+      callback(stored)
+    }
+
+    if (document.readyState === 'complete') {
+      load()
+    } else {
+      const oldLoadFunc = window.onload
+
+      window.onload = () => {
+        if (typeof oldLoadFunc === 'function') {
+          oldLoadFunc()
+        }
+
+        load()
       }
     }
 
@@ -273,12 +287,14 @@ export default class WebSurf extends BaseAdapter {
 
       this.#backup($autosurf)
     }
+
+
   }
 
   /**
    * @inheritdoc
    */
-  static quit($autosurf) {
+  quit ($autosurf) {
     this.#needsBackup(false)
     this.#clearBackup()
   }
@@ -287,7 +303,7 @@ export default class WebSurf extends BaseAdapter {
    * Sets the function to call when an action fails
    * @param {Function} callback
    */
-  static setErrorCallback(callback) {
+  setErrorCallback (callback) {
     this.#errorCallback = callback
   }
 
@@ -295,11 +311,11 @@ export default class WebSurf extends BaseAdapter {
    * Sets the function to call when an action was performed successfully
    * @param {Function} callback
    */
-  static setSuccessCallback(callback) {
+  setSuccessCallback (callback) {
     this.#successCallback = callback
   }
 
-  static #backup($autosurf) {
+  #backup ($autosurf) {
     if (this.#shouldBackup) {
       localStorage.setItem(
         this.#storeName,
@@ -308,7 +324,7 @@ export default class WebSurf extends BaseAdapter {
     }
   }
 
-  static #checked(status) {
+  #checked (status) {
     this.#blur()
 
     if (!status) {
@@ -318,11 +334,11 @@ export default class WebSurf extends BaseAdapter {
     this.#done(true)
   }
 
-  static #clearBackup() {
+  #clearBackup () {
     localStorage.removeItem(this.#storeName)
   }
 
-  static #done(status, errorMessage) {
+  #done (status, errorMessage) {
     this.#needsBackup(true)
 
     this.#blur()
@@ -341,7 +357,7 @@ export default class WebSurf extends BaseAdapter {
    *
    * @param {*} selector The selector of the target html element
    */
-  static #focus(selector) {
+  #focus (selector) {
     if (!selector) {
       throw new Error('Selector not provided')
     }
@@ -367,7 +383,7 @@ export default class WebSurf extends BaseAdapter {
     item.focus({ preventScroll: true })
   }
 
-  static #needsBackup(status) {
+  #needsBackup (status) {
     this.#shouldBackup = status
   }
 }
