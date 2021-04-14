@@ -2,6 +2,7 @@
 version: "3.7"
 services:
   websurf:
+    image: dscribe/autosurf-websurf-adapter
     build:
       context: .
       target: "develop-stage"
