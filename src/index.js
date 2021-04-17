@@ -55,16 +55,25 @@ export default class WebSurf extends BaseAdapter {
   checkElementIs (selector, display) {
     this.#focus(selector)
 
-    display = display === 'visible'
+    const visible = display === 'visible'
+    const isVisible = (elem) => {
+      if (window.getComputedStyle(elem).display === 'none') {
+        return false
+      } else if (!elem.parentElement) {
+        return true
+      }
+
+      return isVisible(elem.parentElement)
+    }
 
     let valid = false
     const item = new Surfer(selector).item
 
     if (item) {
-      if (display) {
-        valid = item.style.display !== 'hidden'
+      if (visible) {
+        valid = isVisible(item)
       } else {
-        valid = item.style.display === 'hidden'
+        valid = !isVisible(item)
       }
     }
 
