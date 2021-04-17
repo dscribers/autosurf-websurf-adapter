@@ -832,9 +832,9 @@
     to-fast-properties "^2.0.0"
 
 "@dscribers/autosurf@^2.0.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@dscribers/autosurf/-/autosurf-2.1.0.tgz#e9477b7d8c4ae63f26ecd8f959c42e4ea1657495"
-  integrity sha512-KsBsZsuyAvWagVgHHE5WLjZE8nTbetE+mXaezuEUUFiWCOPts/5amdHGt5o9SQnmsaqBmOsSSIm9xkWkkHcixA==
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@dscribers/autosurf/-/autosurf-2.1.1.tgz#0e6140151cae5b64d72ef86514d4c93eced231e8"
+  integrity sha512-G9N3HQAk3lJpAvvDvi3ly44PQRfsimlbYzdTv5qzvIrgQUNGw4EpKBpXMDEdSPR54BxdlZTQpnyZxsIfx2U5lw==
 
 "@rollup/plugin-commonjs@^11.0.1":
   version "11.1.0"
