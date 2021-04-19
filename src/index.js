@@ -143,7 +143,17 @@ export default class WebSurf extends BaseAdapter {
    */
   doGoto (url) {
     this.#done()
-    setTimeout(() => (location.href = url))
+
+    setTimeout(() => {
+      const urlWithoutHash = url.split('#')[0]
+      const locationWithHash = location.href.split('#')[0]
+
+      location.href = url
+
+      if (urlWithoutHash === locationWithHash) {
+        location.reload()
+      }
+    })
   }
 
   /**
