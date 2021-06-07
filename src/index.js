@@ -381,30 +381,30 @@ export default class WebSurf extends BaseAdapter {
       throw new Error('Selector not provided')
     }
 
-    try {
-      const item = new Surfer(selector).item
+    const item = new Surfer(selector).item
 
-      const focusData = {
-        backgroundColor: item.style.backgroundColor,
-        border: item.style.border,
-        color: item.style.color,
-      }
-
-      this.#blur = () => {
-        for (let key in focusData) {
-          item.style[key] = focusData[key]
-        }
-      }
-
-      item.style.border = '2px solid magenta'
-      item.style.color = '#0e90d2'
-      item.style.backgroundColor = '#ffffff'
-
-      item.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      item.focus({ preventScroll: true })
-    } catch (e) {
-      console.error(e.message)
+    if (!item) {
+      throw new Error(`Element not found`)
     }
+
+    const focusData = {
+      backgroundColor: item.style.backgroundColor,
+      border: item.style.border,
+      color: item.style.color,
+    }
+
+    this.#blur = () => {
+      for (let key in focusData) {
+        item.style[key] = focusData[key]
+      }
+    }
+
+    item.style.border = '2px solid magenta'
+    item.style.color = '#0e90d2'
+    item.style.backgroundColor = '#ffffff'
+
+    item.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    item.focus({ preventScroll: true })
   }
 
   #needsBackup (status) {
