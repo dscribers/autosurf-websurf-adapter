@@ -99,6 +99,10 @@ export default class Surfer {
     return this.each((item) => (item[attr] = val))
   }
 
+  blur () {
+    this.each(item => item.dispatchEvent(new Event('blur')))
+  }
+
   /**
    * Calls click on the item
    *

@@ -10,6 +10,8 @@ export default class WebSurf extends BaseAdapter {
   #waitPollTime = 500
   #waited = 0
 
+  #cacheBreaker = Date.now()
+
   #blur = () => { }
 
   #errorCallback = () => { }
@@ -148,7 +150,10 @@ export default class WebSurf extends BaseAdapter {
       const urlWithoutHash = url.split('#')[0]
       const locationWithHash = location.href.split('#')[0]
 
-      location.href = url
+      const joiner = url.includes('?') ? '&' : '?'
+
+      // disable assets caching
+      location.href = url + joiner + this.#cacheBreaker
 
       if (urlWithoutHash === locationWithHash) {
         location.reload()
@@ -212,6 +217,7 @@ export default class WebSurf extends BaseAdapter {
         if (++index < str.length) {
           setTimeout(type, speed)
         } else {
+          item.blur()
           this.#done(true)
         }
       }
