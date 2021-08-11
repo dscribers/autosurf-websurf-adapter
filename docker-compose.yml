@@ -2,10 +2,10 @@
 version: "3.7"
 services:
   websurf:
-    image: dscribe/autosurf-websurf-adapter
+    image: dscribe/basic-node
     build:
       context: .
-      target: "develop-stage"
+      target: base
     volumes:
       - .:/app
     user: 1000:1000
