@@ -119,6 +119,7 @@ export default class WebSurf extends BaseAdapter {
    */
   doClick (selector) {
     if (selector) {
+      this.#needsBackup(true)
       this.#focus(selector)
 
       new Surfer(selector).click()
@@ -133,6 +134,7 @@ export default class WebSurf extends BaseAdapter {
    */
   doGoBack () {
     if (window.history) {
+      this.#needsBackup(true)
       this.#done()
       window.history.back()
     } else {
@@ -144,6 +146,7 @@ export default class WebSurf extends BaseAdapter {
    * @inheritdoc
    */
   doGoto (url) {
+    this.#needsBackup(true)
     this.#done()
 
     setTimeout(() => {
@@ -165,6 +168,7 @@ export default class WebSurf extends BaseAdapter {
    * @inheritdoc
    */
   doRefresh () {
+    this.#needsBackup(true)
     this.#done()
     location.reload()
   }
@@ -174,6 +178,7 @@ export default class WebSurf extends BaseAdapter {
    */
   doSelect (selector, value) {
     if (selector) {
+      this.#needsBackup(true)
       this.#focus(selector)
 
       const item = new Surfer(selector)
@@ -189,6 +194,7 @@ export default class WebSurf extends BaseAdapter {
    */
   doSubmitForm (selector) {
     if (selector) {
+      this.#needsBackup(true)
       this.#focus(selector)
 
       new Surfer(selector).item.submit()
@@ -203,6 +209,7 @@ export default class WebSurf extends BaseAdapter {
    */
   doType (selector, str, speed = 100) {
     if (selector) {
+      this.#needsBackup(true)
       this.#focus(selector)
 
       const item = new Surfer(selector)
@@ -233,6 +240,7 @@ export default class WebSurf extends BaseAdapter {
    */
   doWait (milliseconds) {
     if (milliseconds) {
+      this.#needsBackup(true)
       setTimeout(() => this.#done(true), milliseconds)
     } else {
       this.#done(false, 'Wait period not provided')
@@ -244,6 +252,7 @@ export default class WebSurf extends BaseAdapter {
    */
   doWaitTillPageLoads () {
     if (this.#isReloaded) {
+      this.#needsBackup(true)
       this.#isReloaded = false
       this.#done(true)
     } else {
@@ -365,7 +374,6 @@ export default class WebSurf extends BaseAdapter {
 
   #done (status, errorMessage) {
     this.#needsBackup(true)
-
     this.#blur()
 
     if (typeof status === 'boolean') {
