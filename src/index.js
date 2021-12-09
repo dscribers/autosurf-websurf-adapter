@@ -10,7 +10,14 @@ export default class WebSurf extends BaseAdapter {
   #waitPollTime = 500
   #waited = 0
 
-  #cacheBreaker = Date.now()
+  #cacheBreakerWrapper = '__RNR__'
+  #cacheBreaker = null;
+
+  constructor() {
+    super()
+
+    this.#cacheBreaker = this.#cacheBreakerWrapper + Date.now() + this.#cacheBreakerWrapper
+  }
 
   #blur = () => { }
 
@@ -45,7 +52,9 @@ export default class WebSurf extends BaseAdapter {
    * @inheritdoc
    */
   checkIsOn (url) {
-    this.#checked(document.location.href === url.toLowerCase())
+    const cleanLocationHref = document.location.href.replace(/(\?|\&)__RNR__.*__RNR__/, '')
+
+    this.#checked(cleanLocationHref === url)
   }
 
   /**
