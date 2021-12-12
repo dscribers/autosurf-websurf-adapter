@@ -877,9 +877,9 @@
     to-fast-properties "^2.0.0"
 
 "@dscribers/autosurf@^2.0.0":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@dscribers/autosurf/-/autosurf-2.1.1.tgz#0e6140151cae5b64d72ef86514d4c93eced231e8"
-  integrity sha512-G9N3HQAk3lJpAvvDvi3ly44PQRfsimlbYzdTv5qzvIrgQUNGw4EpKBpXMDEdSPR54BxdlZTQpnyZxsIfx2U5lw==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@dscribers/autosurf/-/autosurf-2.2.0.tgz#4292bc7f23b4810e2be78a18629d21c05a220c7c"
+  integrity sha512-nD48arc4cnaXYYi9ZKUm+g6znSGg3n3DmhQ78B+Vpe1LTgMWKMnwEQ4eP1vKPu3p7qe2aI8DjCCxk8sDbLqPJg==
 
 "@rollup/plugin-commonjs@^11.0.1":
   version "11.1.0"
@@ -1039,9 +1039,9 @@ call-bind@^1.0.0:
     get-intrinsic "^1.0.2"
 
 caniuse-lite@^1.0.30001280:
-  version "1.0.30001285"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001285.tgz#fe1e52229187e11d6670590790d669b9e03315b7"
-  integrity sha512-KAOkuUtcQ901MtmvxfKD+ODHH9YVDYnBt+TGYSz2KIfnq22CiArbUxXPN9067gNbgMlnNYRSwho8OPXZPALB9Q==
+  version "1.0.30001286"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001286.tgz#3e9debad420419618cfdf52dc9b6572b28a8fff6"
+  integrity sha512-zaEMRH6xg8ESMi2eQ3R4eZ5qw/hJiVsO/HlLwniIwErij0JDr9P+8V4dtx1l+kLq6j3yy8l8W4fst1lBnat5wQ==
 
 chalk@^2.0.0:
   version "2.4.2"
@@ -1109,9 +1109,9 @@ define-properties@^1.1.3:
     object-keys "^1.0.12"
 
 electron-to-chromium@^1.3.896:
-  version "1.4.14"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.14.tgz#b0aa41fbfbf2eff8c2c6f7a871c03075250f8956"
-  integrity sha512-RsGkAN9JEAYMObS72kzUsPPcPGMqX1rBqGuXi9aa4TBKLzICoLf+DAAtd0fVFzrniJqYzpby47gthCUoObfs0Q==
+  version "1.4.16"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.16.tgz#38ddecc616385e6f101359d1b978c802664157d2"
+  integrity sha512-BQb7FgYwnu6haWLU63/CdVW+9xhmHls3RCQUFiV4lvw3wimEHTVcUk2hkuZo76QhR8nnDdfZE7evJIZqijwPdA==
 
 escalade@^3.1.1:
   version "3.1.1"

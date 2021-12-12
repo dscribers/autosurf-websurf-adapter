@@ -11,7 +11,7 @@ export default class WebSurf extends BaseAdapter {
   #waited = 0
 
   #cacheBreakerWrapper = '__RNR__'
-  #cacheBreaker = null;
+  #cacheBreaker = null
 
   constructor() {
     super()
@@ -29,7 +29,9 @@ export default class WebSurf extends BaseAdapter {
    */
   checkAttrContains (selector, attr, text) {
     this.#focus(selector)
-    this.#checked(new Surfer(selector).attr(attr).indexOf(text) !== -1)
+
+    const it = new Surfer(selector).attr(attr) || ''
+    this.#checked(it.includes(text))
   }
 
   /**
@@ -91,12 +93,32 @@ export default class WebSurf extends BaseAdapter {
     this.#checked(valid)
   }
 
+  checkPageContains (selector, text) {
+    const body = new Surfer(selector)
+
+    let contains = body.text().includes(text)
+
+    if (!contains) {
+      body.find('input, textarea, select').each(item => {
+        contains = `${(item.value || '')}`.includes(text)
+
+        if (contains) {
+          return false
+        }
+      })
+    }
+
+    this.#checked(contains)
+  }
+
   /**
    * @inheritdoc
    */
   checkTextContains (selector, text) {
     this.#focus(selector)
-    this.#checked(new Surfer(selector).text().indexOf(text) !== -1)
+
+    const item = new Surfer(selector).text() || ''
+    this.#checked(item.includes(text))
   }
 
   /**
@@ -112,7 +134,9 @@ export default class WebSurf extends BaseAdapter {
    */
   checkValueContains (selector, text) {
     this.#focus(selector)
-    this.#checked(new Surfer(selector).value().indexOf(text) !== -1)
+
+    const item = `${new Surfer(selector).value() || ''}`
+    this.#checked(item.includes(text))
   }
 
   /**
@@ -229,11 +253,13 @@ export default class WebSurf extends BaseAdapter {
 
       const type = () => {
         item.value(item.value() + str[index])
+        item.dispatchEvent('input')
 
         if (++index < str.length) {
           setTimeout(type, speed)
         } else {
           item.blur()
+          item.dispatchEvent('change')
           this.#done(true)
         }
       }
@@ -250,6 +276,7 @@ export default class WebSurf extends BaseAdapter {
   doWait (milliseconds) {
     if (milliseconds) {
       this.#needsBackup(true)
+
       setTimeout(() => this.#done(true), milliseconds)
     } else {
       this.#done(false, 'Wait period not provided')
@@ -330,8 +357,6 @@ export default class WebSurf extends BaseAdapter {
 
       this.#backup($autosurf)
     }
-
-
   }
 
   /**

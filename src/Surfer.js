@@ -10,19 +10,20 @@ export default class Surfer {
 
 
   /**
-   * @param {any} selector
+   * @param {string|array} selector
    * @param {object} base
+   * @param {string} otherSelector The selector string if the first param is an array
    * @returns {Surfer}
    */
-  constructor(selector, base) {
+  constructor(selector, base, otherSelector) {
     if (base && typeof base !== 'object') {
       throw new Error('Second parameter must be an object')
     }
 
     try {
-      this.#elem(getElementByXPath(selector, base || document))
+      this.#elem(getElementByXPath(selector, base || document), otherSelector)
     } catch (e) {
-      this.#elem(selector, base || document)
+      this.#elem(selector, base || document, otherSelector)
     }
   }
 
@@ -57,8 +58,8 @@ export default class Surfer {
    * @param {object} base
    * @returns {Surfer}
    */
-  static select (selector, base) {
-    return new Surfer(selector, base)
+  static select (selector, base, otherSelector) {
+    return new Surfer(selector, base, otherSelector)
   }
 
   /** Adds the given string to the class of the current item
@@ -100,7 +101,7 @@ export default class Surfer {
   }
 
   blur () {
-    this.each(item => item.dispatchEvent(new Event('blur')))
+    return this.dispatchEvent('blur')
   }
 
   /**
@@ -109,15 +110,11 @@ export default class Surfer {
    * @returns {Surfer}
    */
   click () {
-    return this.each((item) =>
-      item.dispatchEvent(
-        new MouseEvent('click', {
-          bubbles: true,
-          cancelable: true,
-          view: window,
-        })
-      )
-    )
+    return this.dispatchEvent(new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    }))
   }
 
   /**
@@ -131,6 +128,16 @@ export default class Surfer {
     }
   }
 
+  /**
+   * Triggers an event
+   * @param {string|object} event The event name or the event object
+   * @param {object} options The options for the event
+   * @return {Surfer}
+   */
+  dispatchEvent (event, options) {
+    return this.each(item => item.dispatchEvent(typeof event === 'object' ? event : new Event(event, options)))
+  }
+
   /** Loops through the current items and passes each value and its index into the given function.
    * The function would parameters value first, and then the index
    * @param {function} func The function
@@ -138,7 +145,11 @@ export default class Surfer {
    * @return {Surfer}
    */
   each (func) {
-    this.#items.forEach(func)
+    for (let index = 0; index < this.#items.length; index++) {
+      if (false === func(this.#items[index])) {
+        break;
+      }
+    }
 
     return this
   }
@@ -151,7 +162,9 @@ export default class Surfer {
     if (this.#items.length) {
       let items = []
 
-      this.#items.forEach(item => (items = [...items, item.querySelectorAll(selector)]))
+      this.#items.forEach(item => {
+        items = [...items, ...item.querySelectorAll(selector)]
+      })
 
       return Surfer.select(items)
     }
@@ -217,18 +230,16 @@ export default class Surfer {
       scopes = document.querySelectorAll(scope)
     }
 
-    scopes.forEach(scope => {
-      scope.addEventListener(
-        event,
-        (e) => {
-          const listeningTarget = e.target.closest(this.selector)
+    scopes.forEach(scope => scope.addEventListener(
+      event,
+      (e) => {
+        const listeningTarget = e.target.closest(this.selector)
 
-          if (listeningTarget) {
-            func.call(listeningTarget, e)
-          }
+        if (listeningTarget) {
+          func.call(listeningTarget, e)
         }
-      )
-    })
+      }
+    ))
 
     return this
   }
@@ -390,8 +401,11 @@ export default class Surfer {
     return selector
   }
 
-  #elem (selector, base) {
-    if (typeof selector === 'object' && !Array.isArray(selector)) {
+  #elem (selector, base, otherSelector) {
+    if (Array.isArray(selector)) {
+      this.#items = selector
+      this.selector = otherSelector
+    } else if (typeof selector === 'object') {
       if (selector instanceof Surfer) {
         return Surfer
       }
