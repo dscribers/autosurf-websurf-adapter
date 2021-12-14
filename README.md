@@ -1,4 +1,4 @@
-# WebSurf Adapter
+# WebSurf Adapter [Deprecated]
 
 A webpage interaction adapter for [AutoSurf](https://github.com/dscribers/autosurf). It extends [BaseAdapter](https://github.com/dscribers/autosurf/blob/master/src/BaseAdapter.js).
 
